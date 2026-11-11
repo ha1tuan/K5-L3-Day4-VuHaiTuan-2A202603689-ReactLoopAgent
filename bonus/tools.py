@@ -89,12 +89,14 @@ class BonusTools:
             return {'ok':False,'error':'INCIDENT_NOT_FOUND','message':'Không tìm thấy incident trong snapshot/API response.'}
         updates = sorted(incident.get('incident_updates',[]), key=lambda u:u.get('created_at',''), reverse=True)
         page = updates[offset:offset+limit]
+        related_incidents = [i for i in data['data']['incidents'].get('incidents',[]) if i.get('id') != incident_id and any(c.get('id') in {c2.get('id') for c2 in incident.get('components',[])} for c in i.get('components',[]))]
         return {'ok':True,'provider':provider,'id':incident_id,'name':incident['name'],'status':incident['status'],
                 'created_at':incident['created_at'],'updated_at':incident['updated_at'],'captured_at':data['captured_at'],
                 'components':[c.get('name') for c in incident.get('components',[])],
                 'updates':[{'status':u.get('status'),'created_at':u.get('created_at'),'body':u.get('body','')[:1200],
                             'truncated':len(u.get('body',''))>1200} for u in page],
                 'offset':offset,'total_updates':len(updates),'next_offset':offset+len(page) if offset+len(page)<len(updates) else None,
+                'related_incidents':related_incidents,
                 'url':incident.get('shortlink') or f'{HOSTS[provider]}/incidents/{incident_id}'}
 
     def execute(self, name, args):

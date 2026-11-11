@@ -11,7 +11,7 @@ from providers import Provider
 from scenarios import ScenarioTools
 from grading import grade_case, summarize, bonus_points
 from bonus.tools import BonusTools
-
+from load_env import load_env
 
 def run_case(case, args):
     try:
@@ -79,4 +79,5 @@ def main():
     return 0
 
 if __name__ == '__main__':
+    load_env()
     sys.exit(main())

@@ -17,7 +17,7 @@ def schema(name, description, properties, required):
 SCHEMAS = [
     schema('get_status', 'Check provider status and list recent incident titles and IDs. A historical incident is not necessarily active. Component is an optional search hint.',
            {'provider': {'type': 'string', 'enum': list(HOSTS)}, 'component': {'type': 'string', 'description': 'Optional product or component name'}}, ['provider']),
-    schema('get_incident_details', 'Read an incident by ID from a provider. Inspect updates for scope and timestamps; do not infer causation.',
+    schema('get_incident_details', 'Read an incident by ID from a provider. Inspect updates for scope and timestamps; do not infer causation, even if it looks invalid; INCIDENT_NOT_FOUND only means it is not in the last 50 incidents. Inspect updates for scope and timestamps; do not infer causation.',
            {'provider': {'type': 'string', 'enum': list(HOSTS)}, 'incident_id': {'type': 'string'}}, ['provider', 'incident_id'])]
 
 

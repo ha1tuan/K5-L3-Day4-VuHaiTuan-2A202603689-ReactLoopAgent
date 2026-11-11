@@ -6,7 +6,7 @@ from agent import run_agent
 from providers import Provider
 from status_tools import StatusTools
 from bonus.tools import BonusTools
-
+from load_env import load_env
 
 def run(question, mode, provider_name, model, max_steps, fail=False, bonus=False):
     provider = Provider(provider_name, model)
@@ -34,4 +34,5 @@ def main():
     return 0 if result['status'] == 'completed' else 1
 
 if __name__ == '__main__':
+    load_env()
     sys.exit(main())

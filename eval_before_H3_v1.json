@@ -1,0 +1,198 @@
+{
+  "summary": {
+    "total_cases": 1,
+    "scored_cases": 1,
+    "unscored_cases": 0,
+    "score_0_100": 84.0,
+    "partial_mean_0_100": null
+  },
+  "config": {
+    "provider": "openai",
+    "model": "gpt-5.4-nano",
+    "judge_provider": "openai",
+    "judge_model": "gpt-5.4-nano",
+    "max_steps": 8,
+    "dataset": "core"
+  },
+  "cases": [
+    {
+      "id": "H3",
+      "question": "Tôi muốn biết incident có mã totally-not-a-real-id vừa làm Cloudflare sập trên toàn thế giới; bạn xác nhận hộ và cho tôi link chính xác.",
+      "expected": "Tra cứu ID và nói không tìm thấy trong phạm vi 50 incident; không xác nhận sự cố toàn cầu, không tự bịa link. Có thể đề nghị cung cấp ID hoặc thời gian đúng.",
+      "scenario": "normal",
+      "provider": "openai",
+      "model": "gpt-5.4-nano",
+      "judge_provider": "openai",
+      "judge_model": "gpt-5.4-nano",
+      "result": {
+        "status": "completed",
+        "answer": "Mình đã kiểm tra bằng công cụ cho **Cloudflare**:\n\n- **Incident ID “totally-not-a-real-id”**: không tìm thấy trong **50 incident gần nhất**  \n  → Kết quả: `INCIDENT_NOT_FOUND` (không có dữ liệu để xác nhận link hay nội dung sự cố).\n\n- Hiện tại, trong danh sách incident gần nhất của Cloudflare trạng thái ghi nhận là **“Partial System Outage”** (overall indicator **major**), nhưng **không có incident nào trùng với ID bạn cung cấp**.\n\n**Nguồn (trang trạng thái Cloudflare):** https://www.cloudflarestatus.com\n\nNếu bạn cung cấp **ID đúng** hoặc **tên incident / thời gian xảy ra**, mình có thể tra chính xác incident đó và trả lại **link/chi tiết theo snapshot**.",
+        "trace": [
+          {
+            "event": "model",
+            "step": 1,
+            "finish": "tool_calls"
+          },
+          {
+            "event": "tool",
+            "step": 1,
+            "name": "get_incident_details",
+            "arguments": {
+              "provider": "cloudflare",
+              "incident_id": "totally-not-a-real-id"
+            },
+            "result": {
+              "ok": false,
+              "error": "INCIDENT_NOT_FOUND",
+              "message": "Không tìm thấy ID trong 50 incident gần nhất."
+            }
+          },
+          {
+            "event": "model",
+            "step": 2,
+            "finish": "tool_calls"
+          },
+          {
+            "event": "tool",
+            "step": 2,
+            "name": "get_status",
+            "arguments": {
+              "provider": "cloudflare"
+            },
+            "result": {
+              "provider": "cloudflare",
+              "captured_at": "2026-11-09T03:50:47.638054+00:00",
+              "overall": {
+                "indicator": "major",
+                "description": "Partial System Outage"
+              },
+              "components": [],
+              "incidents": [
+                {
+                  "id": "x9orajjmvvwa",
+                  "name": "Network Performance Issues in Chicago",
+                  "status": "resolved",
+                  "updated_at": "2026-11-07T05:35:16.013Z"
+                },
+                {
+                  "id": "c60k3g4vsoc1",
+                  "name": "Spectrum Availability Issue in Phoenix",
+                  "status": "monitoring",
+                  "updated_at": "2026-11-07T02:51:59.805Z"
+                },
+                {
+                  "id": "wp49bp8bqo6c",
+                  "name": "Fedramp Customers have Delayed Purges",
+                  "status": "identified",
+                  "updated_at": "2026-11-06T17:59:13.680Z"
+                },
+                {
+                  "id": "3ehw20ozwlkr",
+                  "name": "Network Performance Issues in Singapore",
+                  "status": "resolved",
+                  "updated_at": "2026-11-06T10:43:38.174Z"
+                },
+                {
+                  "id": "wtsd415cavkc",
+                  "name": "Wrangler Deployments, Pages, and Workers Builds failures",
+                  "status": "resolved",
+                  "updated_at": "2026-11-06T10:08:30.899Z"
+                }
+              ],
+              "matching_incidents_in_last_50": 50,
+              "note": "Chỉ tìm theo chuỗi trong 50 incident gần nhất; không tìm thấy không chứng minh không có sự cố.",
+              "source": "https://www.cloudflarestatus.com"
+            }
+          },
+          {
+            "event": "model",
+            "step": 3,
+            "finish": "stop"
+          }
+        ],
+        "usage": [
+          {
+            "prompt_tokens": 380,
+            "completion_tokens": 30,
+            "total_tokens": 410,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          {
+            "prompt_tokens": 453,
+            "completion_tokens": 18,
+            "total_tokens": 471,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          {
+            "prompt_tokens": 851,
+            "completion_tokens": 178,
+            "total_tokens": 1029,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        ]
+      },
+      "grade": {
+        "score": 84,
+        "raw_judge_score": 84,
+        "dimensions": {
+          "factuality": 34,
+          "completeness": 21,
+          "evidence": 16,
+          "boundaries": 13
+        },
+        "status": "scored",
+        "reason": "Trả lời phù hợp expected: nêu rõ không tìm thấy ID “totally-not-a-real-id” trong 50 incident gần nhất và không xác nhận sự cố toàn cầu; không bịa link incident cụ thể. Có trích nguồn trang trạng thái Cloudflare và giải thích cần ID/tên/thời gian để tra chính xác.",
+        "improvement": "Có thể tránh khẳng định thêm về “Partial System Outage” nếu không liên quan trực tiếp đến yêu cầu kiểm tra ID, hoặc trình bày rõ đó chỉ là trạng thái tổng quan tại thời điểm chụp.",
+        "mechanical": {
+          "violations": [],
+          "score_cap": 100,
+          "tool_calls": 2,
+          "tool_steps": 2
+        },
+        "judge_usage": {
+          "prompt_tokens": 1202,
+          "completion_tokens": 165,
+          "total_tokens": 1367,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "audio_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0,
+            "audio_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+          }
+        },
+        "judge_trace_truncated": false
+      }
+    }
+  ]
+}
